@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"/>
+
+</h:head>
+<h:body>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <div style="clear: both ;margin-bottom:4%; position:relative;">
+        <h:graphicImage value="/resources/images/myLogo.png" width="100%"/>
+        <div style="position: absolute; right:5%; top: 95%;">
+            <h:form>
+
+                <h:commandButton styleClass="btn  btn-primary glyphicon glyphicon-find "
+                                 action="/pages/index.xhtml?faces-redirect=true" value=" Find tickets"/>
+                <h:commandLink styleClass="btn btn-primary glyphicon glyphicon-user"
+                               action="/pages/personal_cabinet.xhtml?faces-redirect=true" value=" Personal cabinet"/>
+                <h:commandLink styleClass="btn btn-primary glyphicon glyphicon-log-in"
+                               action="#{authorizationBean.logOut}" value=" Log Out"/>
+
+
+            </h:form>
+        </div>
+    </div>
+
+    <h:form>
+        <div class="col-md-3">
+            <ul class="nav nav-pills nav-stacked">
+                <li>
+                    <h:commandLink action="/pages/personal_cabinet.xhtml?faces-redirect=true"
+                                   value="Personal information"/>
+
+                </li>
+                <li>
+                    <h:commandLink action="/pages/personal_tickets.xhtml?faces-redirect=true" value="Your tickets"/>
+                </li>
+                <li>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li>
+                            <h:commandLink action="/pages/create_pages/create_address.xhtml?faces-redirect=true"
+                                           value="Manage addresses"/>
+                        </li>
+
+                        <li>
+                            <h:commandLink action="/pages/create_pages/create_company.xhtml?faces-redirect=true"
+                                           value="Manage airline companies"/>
+                        </li>
+                        <li>
+                            <h:commandLink action="/pages/create_pages/create_route.xhtml?faces-redirect=true"
+                                           value="Manage routes"/>
+                        </li>
+                        <li class="active">
+                            <a href="#">Manage flights</a>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </h:form>
+
+    <h:form styleClass="col-md-5">
+        <div class="form-group">
+            <label for="route">Route:</label>
+            <h:selectOneMenu id="route" styleClass="form-control" value="#{flightBean.route}"
+                             converter="#{routeConvert}">
+                <f:selectItems value="#{routeBean.routes}" var="route"
+                               itemLabel="#{route}" itemValue="#{route}"
+                />
+            </h:selectOneMenu>
+        </div>
+        <div class="form-group">
+            <label for="flight_time">Airline company:</label>
+            <h:inputText a:type="datetime-local" id="flight_time" styleClass="form-control"
+                         value="#{flightBean.departureTime}"
+                         converter="#{dateTimeConvert}"/>
+        </div>
+        <div class="form-group">
+            <label for="price_for_first_class">Price for first class:</label>
+            <h:inputText a:type="number" value="#{flightBean.priceForFirstClass}" styleClass="form-control"
+                         id="price_for_first_class">
+                <f:convertNumber/>
+            </h:inputText>
+        </div>
+        <div class="form-group">
+            <label for="price_for_second_class">Price for second class:</label>
+            <h:inputText a:type="number" value="#{flightBean.priceForSecondClass}" styleClass="form-control"
+                         id="price_for_second_class">
+                <f:convertNumber/>
+            </h:inputText>
+        </div>
+        <div class="form-group">
+            <label for="price_for_second_class_near_window">Price for second class near window:</label>
+            <h:inputText a:type="number" value="#{flightBean.priceForSecondClassNearWindow}" styleClass="form-control"
+                         id="price_for_second_class_near_window">
+                <f:convertNumber/>
+            </h:inputText>
+        </div>
+
+        <h:commandButton styleClass="btn btn-success" value="Add flight" action="#{flightBean.addNewFlight}">
+            <f:ajax execute="route flight_time price_for_first_class price_for_second_class price_for_second_class_near_window"
+                    render="flight_table route flight_time price_for_first_class price_for_second_class price_for_second_class_near_window"/>
+
+        </h:commandButton>
+    </h:form>
+
+
+    <div style="margin-top:20px;" class="container col-md-offset-3 col-md-9">
+        <div class="panel panel-info">
+            <div class="panel-heading ">
+                Flights
+            </div>
+            <div class="panel-body">
+                <h:dataTable value="#{flightBean.flights}" var="flight"
+                             styleClass="table table-hover "
+                             id="flight_table"
+                >
+
+                    <h:column>
+                        <f:facet name="header">From:</f:facet>
+                        <h:outputText value="#{flight.route.addressFrom.country}"/>
+                        <h:outputText value=", "/>
+                        <h:outputText value="#{flight.route.addressFrom.town}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">To:</f:facet>
+                        <h:outputText value="#{flight.route.addressTo.country}"/>
+                        <h:outputText value=", "/>
+                        <h:outputText value="#{flight.route.addressTo.town}"/>
+                    </h:column>
+
+
+                    <h:column>
+                        <f:facet name="header">Airline company:</f:facet>
+                        <h:outputText value="#{flight.route.company.companyName}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Flight time:</f:facet>
+                        <h:outputText value="#{flight.departureTime}" converter="#{dateTimeConvert}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Flight time:</f:facet>
+                        <h:outputText value="#{flight.route.flightTime}" converter="#{timeConvert}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Open tickets:</f:facet>
+                        <h:outputText value="#{flightBean.getOpenTickets(flight)}"/>
+                    </h:column>
+                </h:dataTable>
+            </div>
+        </div>
+    </div>
+
+
+</h:body>
+</html>

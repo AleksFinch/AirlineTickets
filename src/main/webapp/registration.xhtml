@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"/>
+
+</h:head>
+<h:body>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <div style="clear: both">
+        <h:graphicImage value="/resources/images/myLogo.png" width="100%"/>
+    </div>
+    <div class="container col-md-8">
+        <div class="panel panel-primary col-md-offset-2 ">
+            <div class="panel-heading ">
+                <h4>Sign in</h4>
+            </div>
+            <ui:fragment rendered="#{param['error_email']}">
+                <div class="container">
+                    <div class=" container alert alert-danger col-md-offset-2 col-md-5 ">
+
+                        E-mail have already used! Please, try again
+
+                    </div>
+                </div>
+            </ui:fragment>
+            <ui:fragment rendered="#{param['error']}">
+                <div class="container">
+                    <div class=" container alert alert-danger col-md-offset-2 col-md-5 ">
+
+                        Oups, something wrong!
+
+                    </div>
+                </div>
+            </ui:fragment>
+            <div class="panel-body">
+                <h:form name="loginForm"
+                      class="form-horizontal container">
+
+                    <div class="form-group ">
+                        <h:outputLabel id="firstNameLabel" for="first_name"
+                                       styleClass="control-label col-md-2" value="First name:"/>
+                        <div class="col-md-4">
+                            <h:inputText a:placeholder="First name" value="#{authorizationBean.firstName}" styleClass="form-control col-md-4" id="first_name"
+                                         autocomplete="off"/>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <h:outputLabel id="lastNameLabel" for="first_name"
+                                       styleClass="control-label col-md-2" value="Last name:"/>
+                        <div class="col-md-4">
+                            <h:inputText a:placeholder="Last name" value="#{authorizationBean.lastName}" styleClass="form-control col-md-4" id="last_name"
+                                         autocomplete="off"/>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <h:outputLabel id="userNameLabel" for="j_username"
+                                       styleClass="control-label col-md-2" value="E-mail:"/>
+                        <div class="col-md-4">
+                            <h:inputText a:placeholder="E-mail"  value="#{authorizationBean.eMail}" styleClass="form-control col-md-4" id="j_username"
+                                         autocomplete="on"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <h:outputLabel id="passwordLabel" for="j_password"
+                                       value="Password:"  styleClass="control-label col-md-2"/>
+                        <div class="col-md-4">
+                            <h:inputSecret a:placeholder="Password" value="#{authorizationBean.password}" styleClass="form-control col-md-4" id="j_password"
+                                           autocomplete="off"/>
+                        </div>
+                    </div>
+                    <div class="col-md-offset-2 col-md-1">
+                        <h:commandButton action="#{authorizationBean.signIn}" styleClass="btn btn-primary btn-block" type="submit" value="Sign Up"
+                                         id="signInButton"/>
+                    </div>
+                    <div >
+                        <ul class="nav col-md-1">
+                            <li class = "active">
+                                <a href="/AirlineTickects-1.0-SNAPSHOT/pages/index.xhtml?faces-redirect=true"
+                                   id="signUpButton">
+                                    Log In
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </h:form>
+            </div>
+        </div>
+    </div>
+</h:body>
+
+</html>

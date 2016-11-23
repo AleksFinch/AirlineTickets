@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="airline_ticket_unit" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jta-data-source>java:/MySQL_Airline_tickets</jta-data-source>
+        <class>com.olexandr.finchuk.entities.Route</class>
+        <class>com.olexandr.finchuk.entities.AirlineCompany</class>
+        <properties>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/airline_tickets"/>
+            <property name="hibernate.connection.username"/>
+            <property name="hibernate.connection.password"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>
+

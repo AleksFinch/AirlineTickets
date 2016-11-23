@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:H="http://java.sun.com/jsf/html">
+<h:head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"/>
+
+</h:head>
+<h:body>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <div style="clear: both ;margin-bottom:4%; position:relative;">
+        <h:graphicImage value="/resources/images/myLogo.png" width="100%"/>
+        <div style="position: absolute; right:5%; top: 95%;">
+            <h:form>
+
+
+                <h:commandLink styleClass="btn btn-primary glyphicon glyphicon-user"
+                               action="/pages/personal_cabinet.xhtml?faces-redirect=true" value=" Personal cabinet"/>
+                <h:commandLink styleClass="btn btn-primary glyphicon glyphicon-log-in"
+                               action="#{authorizationBean.logOut}" value=" Log Out"/>
+
+
+            </h:form>
+        </div>
+    </div>
+    <h:form style="margin:50px;" styleClass="form-horizontal">
+        <div class="form-group">
+            <h:outputLabel for="from_town"
+                           value="From:" styleClass="control-label col-md-1"/>
+            <div class="col-md-4">
+                <h:inputText a:placeholder="Enter Town" styleClass="form-control" id="from_town"
+                             autocomplete="on" value="#{ticketBean.fromTown}"/>
+            </div>
+            <h:outputLabel for="to_town"
+                           value="To:" styleClass="control-label col-md-1"/>
+            <div class="col-md-4">
+                <h:inputText a:placeholder="Enter Town" styleClass="form-control" id="to_town"
+                             autocomplete="on" value="#{ticketBean.toTown}"/>
+            </div>
+            <div>
+                <h:commandButton styleClass="btn btn-primary" action="#{ticketBean.updateCurrFlights}"
+                                 value="Find tickets">
+                    <f:ajax execute="from_town to_town departure_date" render="shownTickets"/>
+
+
+                </h:commandButton>
+            </div>
+        </div>
+        <div class="form-group">
+            <h:outputLabel for="departure_date"
+                           value="Date:" styleClass="control-label col-md-1"/>
+            <div class="col-md-2">
+                <h:inputText a:type="date" value="#{ticketBean.departure_date}" styleClass="form-control"
+                             id="departure_date" converter="#{dateConvert}"/>
+
+            </div>
+
+        </div>
+    </h:form>
+
+
+    <h:dataTable id="shownTickets" value="#{ticketBean.currFlights}" var="flight">
+        <h:column>
+            <h:form>
+            <h:commandLink action="#{ticketBean.saveCurrFlight(flight)}">
+                <div class="container col-md-8">
+                    <div class="panel panel-primary ">
+
+                        <div class="panel-heading">
+                            <h:outputText value="#{flight.route.company.companyName}"/>
+                        </div>
+
+
+                        <div class="panel-body">
+
+                            <div class="col-md-4">
+                                <h:graphicImage value="#{flight.route.company.imgPath}" width="100%"/>
+                            </div>
+
+                            <div class="col-md-8">
+                                <table class="table table-hover ">
+                                    <tr>
+                                        <td>
+                                            <b>Route:</b>
+                                        </td>
+                                        <td>
+                                            <h:outputText value="#{flight.route.addressFrom.town}"/>
+
+                                            <h:outputText value=" - #{flight.route.addressTo.town}"/>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Departure Time:</b><span class="glyphicons glyphicons-address-book"/>
+                                        </td>
+                                        <td>
+                                            <h:outputText value="#{flight.departureTime}   "/>
+                                        </td>
+
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:commandLink>
+            </h:form>
+
+        </h:column>
+
+    </h:dataTable>
+
+</h:body>
+</html>

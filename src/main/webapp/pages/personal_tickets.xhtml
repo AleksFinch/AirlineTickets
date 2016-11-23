@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"/>
+
+</h:head>
+<h:body>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <div style="clear: both ;margin-bottom:4%; position:relative;">
+        <h:graphicImage value="/resources/images/myLogo.png" width="100%"/>
+        <div style="position: absolute; right:5%; top: 95%;">
+            <h:form>
+
+                <h:commandButton styleClass="btn  btn-primary glyphicon glyphicon-find "
+                                 action="/pages/index.xhtml?faces-redirect=true" value=" Find tickets"/>
+                <h:commandLink styleClass="btn btn-primary glyphicon glyphicon-user"
+                               action="/pages/personal_cabinet.xhtml?faces-redirect=true" value=" Personal cabinet"/>
+                <h:commandLink styleClass="btn btn-primary glyphicon glyphicon-log-in"
+                               action="#{authorizationBean.logOut}" value=" Log Out"/>
+
+
+            </h:form>
+        </div>
+    </div>
+    <c:set value="#{userBean.user}" var="currUser"/>
+    <c:set var="isAdmin" value="#{facesContext.externalContext.isUserInRole('admin')}"/>
+
+    <h:form>
+        <div class="col-md-3">
+            <ul class="nav nav-pills nav-stacked">
+                <li>
+                    <h:commandLink action="/pages/personal_cabinet.xhtml?faces-redirect=true"
+                                   value="Personal information"/>
+                </li>
+                <li class="active">
+                    <a href="#">Your tickets</a>
+                </li>
+                <ui:fragment rendered="#{isAdmin}">
+                    <li>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li>
+                                <h:commandLink action="/pages/create_pages/create_address.xhtml?faces-redirect=true"
+                                               value="Manage addresses"/>
+                            </li>
+
+                            <li>
+                                <h:commandLink action="/pages/create_pages/create_company.xhtml?faces-redirect=true"
+                                               value="Manage airline companies"/>
+                            </li>
+                            <li>
+                                <h:commandLink action="/pages/create_pages/create_route.xhtml?faces-redirect=true"
+                                               value="Manage routes"/>
+                            </li>
+
+                            <li>
+                                <h:commandLink action="/pages/create_pages/create_flight.xhtml?faces-redirect=true"
+                                               value="Manage flights"/>
+
+                            </li>
+
+                        </ul>
+                    </li>
+                </ui:fragment>
+            </ul>
+        </div>
+    </h:form>
+    <h:dataTable id="shownTickets" value="#{currUser.tickets}" var="ticket">
+        <h:column>
+
+            <div class="container col-md-8">
+                <div class="panel panel-primary ">
+
+                    <div class="panel-heading">
+                        <h:outputText value="#{ticket.flight.route.company.companyName}"/>
+                    </div>
+
+
+                    <div class="panel-body">
+
+                        <div class="col-md-4">
+                            <h:graphicImage value="#{ticket.flight.route.company.imgPath}" width="100%"/>
+                        </div>
+
+                        <div class="col-md-8">
+                            <table class="table table-hover ">
+                                <tr>
+                                    <td>
+                                        <b>Route:</b>
+                                    </td>
+                                    <td>
+                                        <h:outputText value="#{ticket.flight.route.addressFrom.town}"/>
+
+                                        <h:outputText value=" - #{ticket.flight.route.addressTo.town}"/>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Departure Time:</b><span class="glyphicons glyphicons-address-book"/>
+                                    </td>
+                                    <td>
+                                        <h:outputText value="#{ticket.flight.departureTime}   "/>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Owner:</b><span class="glyphicons glyphicons-address-book"/>
+                                    </td>
+                                    <td><h:outputText
+                                            value="Owner: #{ticket.owner.firstName} #{ticket.owner.lastName}"/>
+
+
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Place:</b><span class="glyphicons glyphicons-address-book"/>
+                                    </td>
+                                    <td><h:outputText value="Place: #{ticket.placeNumber}"/>
+
+
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Price:</b><span class="social social-gmai"/>
+                                    </td>
+                                    <td><h:outputText value="Price: #{ticket.price} "/>
+
+
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </h:column>
+    </h:dataTable>
+
+
+</h:body>
+</html>
